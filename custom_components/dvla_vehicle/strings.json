@@ -1,0 +1,54 @@
+{
+    "config": {
+        "title": "DVLA Vehicle Information",
+        "step": {
+            "user": {
+                "title": "DVLA Vehicle Information",
+                "description": "Enter your DVLA API key and vehicle registration number",
+                "data": {
+                    "api_key": "DVLA API Key",
+                    "registration": "Vehicle Registration Number"
+                }
+            }
+        },
+        "error": {
+            "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
+            "invalid_auth": "[%key:common::config_flow::error::invalid_auth%]",
+            "invalid_reg": "Invalid vehicle registration number",
+            "unknown": "[%key:common::config_flow::error::unknown%]"
+        },
+        "abort": {
+            "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
+        }
+    },
+    "entity": {
+        "sensor": {
+            "dvla_vehicle": {
+                "state": {
+                    "unknown": "Unknown"
+                },
+                "state_attributes": {
+                    "art_end_date": "ART End Date",
+                    "co2_emissions": "CO2 Emissions",
+                    "color": "Color",
+                    "engine_capacity": "Engine Capacity",
+                    "fuel_type": "Fuel Type",
+                    "make": "Make",
+                    "marked_for_export": "Marked for Export",
+                    "month_of_first_registration": "First Registration",
+                    "mot_status": "MOT Status",
+                    "registration_number": "Registration",
+                    "revenue_weight": "Revenue Weight",
+                    "tax_due_date": "Tax Due Date",
+                    "tax_status": "Tax Status",
+                    "type_approval": "Type Approval",
+                    "wheelplan": "Wheelplan",
+                    "year_of_manufacture": "Year",
+                    "euro_status": "Euro Status",
+                    "real_driving_emissions": "Real Driving Emissions",
+                    "date_of_last_v5c_issued": "Last V5C Issue Date"
+                }
+            }
+        }
+    }
+}
