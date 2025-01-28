@@ -43,4 +43,3 @@ class DVLAVehicleDataUpdateCoordinator(DataUpdateCoordinator):
             return data
         except Exception as error:
             raise UpdateFailed(f"Error communicating with API: {error}")
-
