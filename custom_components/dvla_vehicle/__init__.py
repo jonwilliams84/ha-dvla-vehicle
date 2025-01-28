@@ -28,15 +28,27 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up DVLA Vehicle from a config entry."""
+    hass.data.setdefault(DOMAIN, {})
+    
+    # Create API instance
     api = VehicleLookupSystem(
         db_path=hass.config.path(f"dvla_vehicle_{entry.entry_id}.db"),
         api_key=entry.data[CONF_API_KEY],
     )
 
+    # Get update interval
+    update_interval = None
+    if not entry.data.get(CONF_DISABLE_UPDATES):
+        interval_seconds = entry.data.get(CONF_UPDATE_INTERVAL)
+        if interval_seconds:
+            update_interval = timedelta(seconds=interval_seconds)
+
+    # Create coordinator
     coordinator = DVLAVehicleDataUpdateCoordinator(
         hass,
         api,
         entry.data[CONF_REGISTRATION],
+        update_interval,
     )
 
     try:

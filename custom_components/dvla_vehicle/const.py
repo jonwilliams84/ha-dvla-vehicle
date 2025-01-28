@@ -4,7 +4,18 @@ from typing import Final
 DOMAIN: Final = "dvla_vehicle"
 CONF_API_KEY: Final = "api_key"
 CONF_REGISTRATION: Final = "registration"
-DEFAULT_SCAN_INTERVAL: Final = 86400  # 24 hours
+CONF_UPDATE_INTERVAL: Final = "update_interval"
+CONF_DISABLE_UPDATES: Final = "disable_updates"
+
+DEFAULT_SCAN_INTERVAL = timedelta(days=1)  # 24 hours
+UPDATE_INTERVALS = {
+    "Disabled": None,
+    "1 hour": timedelta(hours=1),
+    "12 hours": timedelta(hours=12),
+    "1 day": timedelta(days=1),
+    "1 week": timedelta(days=7),
+    "1 month": timedelta(days=30),
+}
 
 # All possible attributes
 ATTR_ART_END_DATE: Final = "art_end_date"

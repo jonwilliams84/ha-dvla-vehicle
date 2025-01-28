@@ -1,6 +1,6 @@
 """DataUpdateCoordinator for DVLA Vehicle integration."""
-from datetime import timedelta
 import logging
+from datetime import timedelta
 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import (
@@ -8,8 +8,7 @@ from homeassistant.helpers.update_coordinator import (
     UpdateFailed,
 )
 
-from .vehicle import VehicleLookupSystem
-from .const import DOMAIN, DEFAULT_SCAN_INTERVAL
+from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -19,15 +18,16 @@ class DVLAVehicleDataUpdateCoordinator(DataUpdateCoordinator):
     def __init__(
         self,
         hass: HomeAssistant,
-        vehicle_api: VehicleLookupSystem,
+        vehicle_api,
         registration: str,
+        update_interval: timedelta | None,
     ) -> None:
         """Initialize."""
         super().__init__(
             hass,
             _LOGGER,
             name=DOMAIN,
-            update_interval=timedelta(seconds=DEFAULT_SCAN_INTERVAL),
+            update_interval=update_interval,
         )
         self.vehicle_api = vehicle_api
         self.registration = registration
@@ -35,12 +35,9 @@ class DVLAVehicleDataUpdateCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self):
         """Update data via library."""
         try:
-            data = await self.hass.async_add_executor_job(
-                self.vehicle_api.fetch_vehicle_data, self.registration
+            return await self.hass.async_add_executor_job(
+                self.vehicle_api.fetch_vehicle_data,
+                self.registration,
             )
-            if data is None:
-                raise UpdateFailed(f"No data returned for {self.registration}")
-            return data
         except Exception as error:
             raise UpdateFailed(f"Error communicating with API: {error}")
-
