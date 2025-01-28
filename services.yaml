@@ -1,0 +1,11 @@
+lookup_vehicle:
+  name: Lookup Vehicle
+  description: Look up a vehicle by its registration number
+  fields:
+    registration:
+      name: Registration
+      description: Vehicle registration number
+      required: true
+      example: "AB12CDE"
+      selector:
+        text:

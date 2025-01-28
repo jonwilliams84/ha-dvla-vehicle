@@ -1,5 +1,4 @@
-# ha-dvla-vehicle
-Home Assistant Custom Component for DVLA Vehicle Enquiry Service
+# DVLA Vehicle Information for Home Assistant
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 
@@ -21,7 +20,7 @@ This custom component integrates with the DVLA Vehicle Enquiry Service API to pr
 
 1. Add this repository as a custom repository in HACS:
    - HACS → Integrations → 3 dots (top right) → Custom repositories
-   - URL: `https://github.com/jonwilliams84/ha-dvla-vehicle`
+   - URL: `your-repository-url`
    - Category: Integration
 
 2. Click Install
@@ -31,7 +30,7 @@ This custom component integrates with the DVLA Vehicle Enquiry Service API to pr
 1. Copy the `dvla_vehicle` directory to your `custom_components` directory:
 ```bash
 cd /config/custom_components
-git clone https://github.com/jonwilliams84/ha-dvla-vehicle
+git clone your-repository-url
 ```
 
 2. Restart Home Assistant
@@ -64,7 +63,7 @@ alias: "ANPR DVLA Vehicle Lookup"
 description: "Looks up vehicle details when new registration plates are detected by CCTV"
 trigger:
   - platform: state
-    entity_id: sensor.number_plates
+    entity_id: sensor.number_plates_2
 condition:
   - condition: template
     value_template: "{{ trigger.to_state.state | length > 0 }}"
@@ -136,14 +135,14 @@ alias: "Vehicle Tax Due Alert"
 trigger:
   - platform: template
     value_template: >
-      {% set days = (states.sensor.vehicle_ab12cde.attributes.tax_due_date
+      {% set days = (states.sensor.vehicle_ab12cde.attributes.tax_due_date 
          | as_datetime - now()).days %}
       {{ days <= 14 }}
 action:
   - service: notify.mobile_app
     data:
       title: "Vehicle Tax Due"
-      message: "Tax for vehicle {{ states.sensor.vehicle_ab12cde.attributes.registration_number }}
+      message: "Tax for vehicle {{ states.sensor.vehicle_ab12cde.attributes.registration_number }} 
                 is due in {{ days }} days"
 ```
 

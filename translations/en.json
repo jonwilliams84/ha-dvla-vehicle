@@ -1,0 +1,23 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "DVLA Vehicle Information",
+                "description": "Set up DVLA Vehicle monitoring. You need your API key and vehicle registration.",
+                "data": {
+                    "api_key": "DVLA API Key",
+                    "registration": "Vehicle Registration"
+                }
+            }
+        },
+        "error": {
+            "cannot_connect": "Failed to connect to DVLA API",
+            "invalid_auth": "Invalid API key",
+            "invalid_reg": "Invalid registration number",
+            "unknown": "Unexpected error occurred"
+        },
+        "abort": {
+            "already_configured": "This vehicle is already configured"
+        }
+    }
+}

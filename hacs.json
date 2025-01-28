@@ -1,0 +1,8 @@
+{
+    "name": "DVLA Vehicle Enquiry Service",
+    "render_readme": true,
+    "domains": ["dvla_vehicle"],
+    "homeassistant": "2023.8.0",
+    "hacs": "1.6.0"
+}
+
