@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <!-- Green triangle -->
+  <polygon points="128,20 240,224 16,224" fill="#3ABD44"/>
+  <!-- White border -->
+  <polygon points="128,32 228,216 28,216" fill="none" stroke="white" stroke-width="5"/>
+  <!-- Road path icon -->
+  <path d="M128 48 L120 85 L124 85 L124 100 L130 100 L130 93 L136 93 L136 100 L142 100 L142 85 L146 85 L138 48 Z" fill="white"/>
+  <!-- DVLA text inside -->
+  <text x="128" y="155" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle" letter-spacing="2">DVLA</text>
+  <!-- Registered mark -->
+  <text x="190" y="52" font-family="Arial, sans-serif" font-size="12" fill="black">®</text>
+</svg>
