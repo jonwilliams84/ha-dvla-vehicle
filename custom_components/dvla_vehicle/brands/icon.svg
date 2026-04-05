@@ -1,4 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
-  <rect width="256" height="256" fill="#4499DD"/>
-  <text x="128" y="170" font-family="Arial, sans-serif" font-size="140" font-weight="bold" fill="white" text-anchor="middle">DV</text>
+  <!-- Green triangle background -->
+  <polygon points="128,16 240,224 16,224" fill="#3ABD44"/>
+  <!-- White border -->
+  <polygon points="128,30 226,216 30,216" fill="none" stroke="white" stroke-width="6"/>
+  <!-- Road path icon -->
+  <path d="M128 56 L108 120 L115 120 L115 150 L125 150 L125 135 L132 135 L132 155 L142 155 L142 130 L148 130 L148 115 L152 115 L140 56 Z" fill="white"/>
 </svg>
