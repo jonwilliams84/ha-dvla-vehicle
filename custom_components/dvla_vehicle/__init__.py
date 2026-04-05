@@ -1,5 +1,4 @@
 """The DVLA Vehicle integration."""
-import asyncio
 import logging
 from typing import Any
 
@@ -28,10 +27,15 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up DVLA Vehicle from a config entry."""
+    api_key = entry.data[CONF_API_KEY]
+
     api = VehicleLookupSystem(
         db_path=hass.config.path("dvla_vehicle.db"),
-        api_key=entry.data[CONF_API_KEY],
+        api_key=api_key,
     )
+
+    # Store API key globally so the lookup service can use it
+    hass.data[DOMAIN]["api_key"] = api_key
 
     coordinator = DVLAVehicleDataUpdateCoordinator(
         hass,
@@ -46,36 +50,35 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     hass.data[DOMAIN][entry.entry_id] = coordinator
 
-    # Register lookup service
+    # Register lookup service — reads API key from first configured entry
     async def handle_lookup(call: ServiceCall) -> None:
-        """Handle the service call."""
+        """Handle the service call — look up vehicle data without creating an entry."""
         registration = call.data[CONF_REGISTRATION].upper()
 
-        # Check if entry already exists
-        existing_entries = [
-            entry for entry in hass.config_entries.async_entries(DOMAIN)
-            if entry.data.get(CONF_REGISTRATION) == registration
-        ]
-
-        if existing_entries:
-            # Update existing entry
-            entry_id = existing_entries[0].entry_id
-            coordinator = hass.data[DOMAIN][entry_id]
-            await coordinator.async_refresh()
+        stored_api_key = hass.data[DOMAIN].get("api_key")
+        if not stored_api_key:
+            _LOGGER.error(
+                "No API key available — please add a DVLA Vehicle config entry first"
+            )
             return
 
-        # Create new entry using current API key
-        api_key = entry.data[CONF_API_KEY]
-        
-        # Create new config entry
-        result = await hass.config_entries.flow.async_init(
-            DOMAIN,
-            context={"source": "user"},
-            data={
-                CONF_API_KEY: api_key,
-                CONF_REGISTRATION: registration,
-            },
+        temp_api = VehicleLookupSystem(
+            db_path=hass.config.path("dvla_vehicle.db"),
+            api_key=stored_api_key,
         )
+
+        result = await hass.async_add_executor_job(
+            temp_api.fetch_vehicle_data, registration
+        )
+
+        if result:
+            hass.bus.async_fire(
+                f"{DOMAIN}_vehicle_lookup",
+                {"registration": registration, "data": result},
+            )
+            _LOGGER.debug(f"Lookup result for {registration}: {result}")
+        else:
+            _LOGGER.warning(f"No data found for {registration}")
 
     hass.services.async_register(
         DOMAIN,
