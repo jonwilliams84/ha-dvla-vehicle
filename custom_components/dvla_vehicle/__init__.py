@@ -29,7 +29,7 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up DVLA Vehicle from a config entry."""
     api = VehicleLookupSystem(
-        db_path=hass.config.path(f"dvla_vehicle_{entry.entry_id}.db"),
+        db_path=hass.config.path("dvla_vehicle.db"),
         api_key=entry.data[CONF_API_KEY],
     )
 
